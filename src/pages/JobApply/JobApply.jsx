@@ -1,9 +1,12 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
+import Swal from 'sweetalert2';
 
 const JobApply = () => {
     const { id } = useParams()
-    console.log(id);
+    const {user} = useAuth()
+    // console.log(id,user);
 
     const submitJobApplication = e => {
         e.preventDefault()
@@ -13,35 +16,53 @@ const JobApply = () => {
         const resume = form.resume.value
         console.log(linkedin, github, resume);
 
+        const jobApplication = {
+            job_id: id,
+            applicant_email: user.email,
+            linkedin,
+            github,
+            resume
+        }
+        fetch('http://localhost:5000/job-applications', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(jobApplication)
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.insertedId) {
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "Your work has been saved",
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
+                  
+            }
+        })
+
     }
     return (
         <div>
-            <div className="hero bg-base-200 min-h-screen">
-                <div className="hero-content flex-col lg:flex-row-reverse">
-                    <div className="text-center lg:text-left">
-                        <h1 className="text-5xl font-bold">Apply job and Good Luck</h1>
-                        <p className="py-6">
-                            Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
-                            quasi. In deleniti eaque aut repudiandae et a id nisi.
-                        </p>
-                    </div>
-                    <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-                        <form onSubmit={submitJobApplication} action="">
-                            <div className="card-body">
-                                <fieldset className="fieldset">
-                                    <label className="fieldset-label">Linkedin URL</label>
-                                    <input type="url" name='linkedin' className="input" placeholder="Linkedin URL" />
-                                    <label className="fieldset-label">Github URL</label>
-                                    <input type="url" name='github' className="input" placeholder="Github URL" />
-                                    <label className="fieldset-label">Resume URL</label>
-                                    <input type="url" name='resume' className="input" placeholder="Resume URL" />
+            <div className="card bg-base-100 w-full shadow-2xl">
+                <h1 className="text-5xl font-bold text-center">Apply job and Good Luck!</h1>
+                <form onSubmit={submitJobApplication} action="">
+                    <div className="card-body">
+                        <fieldset className="fieldset">
+                            <label className="fieldset-">Linkedin URL</label>
+                            <input type="url" name='linkedin' className="input w-full" placeholder="Linkedin URL" />
+                            <label className="fieldset-label">Github URL</label>
+                            <input type="url" name='github' className="input w-full" placeholder="Github URL" />
+                            <label className="fieldset-label">Resume URL</label>
+                            <input type="url" name='resume' className="input w-full" placeholder="Resume URL" />
 
-                                    <button className="btn btn-neutral mt-4">Apply</button>
-                                </fieldset>
-                            </div>
-                        </form>
+                            <button className="btn btn-neutral mt-4">Apply</button>
+                        </fieldset>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     );
