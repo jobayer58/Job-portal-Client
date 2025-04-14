@@ -24,7 +24,7 @@ const JobApply = () => {
             github,
             resume
         }
-        fetch('http://localhost:5000/job-applications', {
+        fetch('http://https://job-portal-server-henna.vercel.app:5000/job-applications', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
