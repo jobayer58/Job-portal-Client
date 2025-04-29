@@ -4,7 +4,7 @@ import useAuth from './useAuth';
 import { useNavigate } from 'react-router-dom';
 
 const axiosInstance = axios.create({
-    baseURL: 'http://https://job-portal-server-henna.vercel.app:5000',
+    baseURL: 'https://job-portal-server-henna.vercel.app',
     withCredentials: true
 })
 

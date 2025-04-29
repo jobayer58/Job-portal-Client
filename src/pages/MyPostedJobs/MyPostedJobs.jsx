@@ -7,7 +7,7 @@ const MyPostedJobs = () => {
     const { user } = useAuth()
 
     useEffect(() => {
-        fetch(`http://https://job-portal-server-henna.vercel.app:5000/jobs?email=${user.email}`)
+        fetch(`https://job-portal-server-henna.vercel.app/jobs?email=${user.email}`)
             .then(res => res.json())
             .then(data => setJobs(data))
     }, [user.email])

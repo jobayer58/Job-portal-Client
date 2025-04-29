@@ -23,7 +23,7 @@ const SignIn = () => {
         .then(result => {
             console.log(result.user.email);
             const user = {email: result.user.email}
-            axios.post('http://https://job-portal-server-henna.vercel.app:5000/jwt',user,{withCredentials:true} )
+            axios.post('https://job-portal-server-henna.vercel.app/jwt',user,{withCredentials:true} )
             .then(res => console.log(res.data))
     
             navigate(from)
